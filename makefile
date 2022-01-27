@@ -33,14 +33,10 @@ $(JAVA_TESTS_CLASS):$(JAVA_TESTS)
 $(JAVA_CLASS):$(JAVA_SRC)
 	javac src/$(patsubst %.class,%.java,$@) -d bin/
 
--clean:
-	rm -rf bin
-	rm -rf tmp
-	rm -rf tests/tests.log
-	mkdir bin
-	mkdir tmp
-	touch tests/tests.log
+.PHONY:flush
+flush:
+	@ python ./pro/clean.py
 
--refresh:
-	rm -rf bin
-	mkdir bin
+.PHONY:renew
+renew:
+	@ python ./pro/build.py
