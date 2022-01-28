@@ -22,21 +22,25 @@ $(C_EXE):$(C_SRC)
 
 $(C_TESTS_OUT):$(C_TESTS)
 	$(CC) tests/$(patsubst %,%.c,$@) -o tmp/$@
-	tmp/$@
-	rm -rf tmp/$@
-
-$(JAVA_TESTS_CLASS):$(JAVA_TESTS)
-	javac tests/$(patsubst %.class,%.java,$@) -d tmp/
-	java tmp/$@
-	rm -rf tmp/$@
 
 $(JAVA_CLASS):$(JAVA_SRC)
-	javac src/$(patsubst %.class,%.java,$@) -d bin/
+	@ python ./pro/java_class.py $(patsubst %.class,%.java,$@)
 
-.PHONY:flush
-flush:
+$(JAVA_TESTS_CLASS):$(JAVA_TESTS)
+	@ python ./pro/java_tests_class.py $(patsubst %.class,%.java,$@)
+
+.PHONY:clean
+clean:
 	@ python ./pro/clean.py
 
 .PHONY:renew
 renew:
-	@ python ./pro/build.py
+	@ python ./pro/renew.py
+	
+.PHONY:addjar
+addjar:
+	@ python ./pro/addjar.py	
+	
+.PHONY:test
+test:
+	@ python ./pro/test.py
